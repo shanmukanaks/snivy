@@ -1,0 +1,15 @@
+telemetry = { log_level = "info", json = false }
+
+[exchange]
+network = "testnet"
+rate_limit_per_minute = 600
+
+[persistence]
+snapshot_path = "data/snapshots"
+journal_path = "data/journal.log"
+snapshot_interval_secs = 30
+
+[[strategies]]
+id = "ma_crossover"
+enabled = true
+params = { asset = "BTC", short_window = 5, long_window = 15, trade_size = 0.001 }
