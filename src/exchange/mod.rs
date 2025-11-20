@@ -6,4 +6,4 @@ pub mod ws_client;
 pub use info_client::InfoService;
 pub use order_router::{OrderIntent, OrderRouter};
 pub use position_manager::{FillEvent, PositionManager};
-pub use ws_client::MarketStream;
+pub use ws_client::{MarketStream, user_fills_stream};

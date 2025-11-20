@@ -16,6 +16,13 @@ impl MovingAverage {
         }
     }
 
+    pub fn seed(&mut self, values: &[f64]) {
+        self.window.clear();
+        for value in values.iter().cloned().take(self.period) {
+            self.window.push_back(value);
+        }
+    }
+
     pub fn update(&mut self, value: f64) -> Option<f64> {
         self.window.push_back(value);
         if self.window.len() > self.period {
@@ -28,11 +35,23 @@ impl MovingAverage {
         }
     }
 
-    pub fn current(&mut self) -> Option<f64> {
+    pub fn current(&self) -> Option<f64> {
         if self.window.len() == self.period {
-            simple_moving_average(self.window.make_contiguous())
+            Some(self.window.iter().sum::<f64>() / self.period as f64)
         } else {
             None
+        }
+    }
+
+    pub fn values(&self) -> Vec<f64> {
+        self.window.iter().cloned().collect()
+    }
+
+    pub fn is_ready(&self) -> bool {
+        if self.window.len() == self.period {
+            true
+        } else {
+            false
         }
     }
 }

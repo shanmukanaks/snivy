@@ -35,6 +35,10 @@ pub struct ExchangeConfig {
     pub rate_limit_per_minute: u32,
     pub api_key: Option<String>,
     pub secret_key: Option<String>,
+    #[serde(default)]
+    pub signer_private_key: Option<String>,
+    #[serde(default)]
+    pub signer_private_key_env: Option<String>,
 }
 
 impl ExchangeConfig {
@@ -50,6 +54,8 @@ impl Default for ExchangeConfig {
             rate_limit_per_minute: 600,
             api_key: None,
             secret_key: None,
+            signer_private_key: None,
+            signer_private_key_env: None,
         }
     }
 }

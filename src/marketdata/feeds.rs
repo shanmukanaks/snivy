@@ -1,3 +1,4 @@
+use std::sync::Arc;
 use std::time::Duration;
 
 use tokio::sync::broadcast;
@@ -10,12 +11,14 @@ use crate::marketdata::events::MarketEvent;
 
 #[derive(Clone)]
 pub struct FeedCoordinator {
-    inner: MarketStream,
+    inner: Arc<MarketStream>,
 }
 
 impl FeedCoordinator {
     pub fn new(stream: MarketStream) -> Self {
-        Self { inner: stream }
+        Self {
+            inner: Arc::new(stream),
+        }
     }
 
     pub fn subscribe(&self) -> broadcast::Receiver<MarketEvent> {

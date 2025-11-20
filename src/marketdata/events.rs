@@ -6,6 +6,7 @@ pub struct CandleEvent {
     pub asset: String,
     pub close: f64,
     pub timestamp: DateTime<Utc>,
+    pub interval: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

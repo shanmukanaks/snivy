@@ -2,8 +2,6 @@ use dashmap::DashMap;
 use serde::{Deserialize, Serialize};
 use tracing::instrument;
 
-use crate::errors::AppResult;
-
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Position {
     pub asset: String,
@@ -37,7 +35,7 @@ impl PositionManager {
     }
 
     #[instrument(skip(self))]
-    pub fn apply_fill(&self, fill: &FillEvent) -> AppResult<()> {
+    pub fn apply_fill(&self, fill: &FillEvent) {
         self.inner
             .entry(fill.asset.clone())
             .and_modify(|position| {
@@ -53,6 +51,5 @@ impl PositionManager {
                 size: if fill.is_buy { fill.size } else { -fill.size },
                 entry_price: fill.price,
             });
-        Ok(())
     }
 }

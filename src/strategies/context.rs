@@ -2,6 +2,7 @@ use std::sync::Arc;
 
 use tracing::Span;
 
+use crate::errors::AppResult;
 use crate::exchange::{OrderIntent, OrderRouter, PositionManager};
 use crate::storage::journal::Journal;
 
@@ -39,9 +40,15 @@ impl StrategyContext {
         self.span.clone()
     }
 
-    pub async fn submit_intent(&self, intent: OrderIntent) {
-        if let Err(e) = self.order_router.submit(intent.clone()).await {
-            tracing::error!(error = %e, "order submission failed");
-        }
+    pub fn positions_handle(&self) -> Arc<PositionManager> {
+        self.positions.clone()
+    }
+
+    pub fn order_router(&self) -> Arc<OrderRouter> {
+        self.order_router.clone()
+    }
+
+    pub async fn submit_intent(&self, intent: OrderIntent) -> AppResult<()> {
+        self.order_router.submit(intent.clone()).await.map(|_| ())
     }
 }

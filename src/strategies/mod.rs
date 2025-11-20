@@ -10,9 +10,10 @@ use chrono::{DateTime, Utc};
 use serde_json::Value;
 
 use crate::errors::AppResult;
-use crate::exchange::FillEvent;
-use crate::exchange::OrderIntent;
+use crate::exchange::{FillEvent, InfoService, OrderIntent};
 use crate::marketdata::events::MarketEvent;
+use crate::storage::persistence::SnapshotStore;
+use hyperliquid_rust_sdk::BaseUrl;
 
 #[derive(Debug, Clone)]
 pub enum StrategyAction {
@@ -37,6 +38,13 @@ impl StrategyResponse {
             actions: vec![],
         }
     }
+}
+
+#[derive(Clone)]
+pub struct StrategyBuilderContext {
+    pub base_url: BaseUrl,
+    pub info: InfoService,
+    pub snapshot_store: SnapshotStore,
 }
 
 #[async_trait]
